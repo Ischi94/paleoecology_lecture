@@ -1,0 +1,152 @@
+---
+title: "Analytical Paleobiology"
+subtitle: "with R"
+author: "Gregor H. Mathes"
+institute: "Paleoecology Lectures"
+date: "2021/06/17 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    self_contained: true
+    css: [default, metropolis, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: R
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+# Overview  
+  
+.pull-left[
+<br> 
+**Today**
+
+- Tidy project structure  
+  
+- Troubleshooting  
+  
+- PBDB data  
+  
+- Binning of time series  
+  
+- Sample-standardization
+]
+
+--
+
+.pull-right[
+<br> 
+**Tomorrow**  
+  
+- Tidy data
+  - import data
+  - tibbles  
+
+
+- Tidyverse  
+  - wrangle
+  - iterate
+  - visualize
+  
+]
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(tidyverse)
+```
+  
+```{r xaringanExtra-search, echo=FALSE}
+xaringanExtra::use_search(show_icon = FALSE, 
+                          case_sensitive = FALSE)
+```  
+  
+```{r xaringan-tile-view, echo=FALSE}
+xaringanExtra::use_tile_view()
+```  
+
+---
+class:inverse, mline, center, middle
+# Tidy project structure
+
+---
+# Project structure  
+  
+.center[![Image of a youtuber (Rachelleea) rethinking what happened in 2019](https://i.ytimg.com/vi/OjWHL_AYGxc/maxresdefault.jpg)]
+
+.footnote[
+[Youtuber Rachelleea](https://www.youtube.com/channel/UCJCgaQzY5z5sA-xwkwibygw)
+]
+---
+# Project structure  
+
+.pull-left[
+<br> 
+**Problem**
+
+- absolute paths
+  
+- `rm(list = ls())`
+]
+
+--
+
+.pull-right[
+<br> 
+**Solution**  
+  
+- Rstudio projects
+
+
+- The `here` package  
+  
+- disenable workspace preservation
+]
+
+---
+# What is real?  
+  
+
+.center[<img src="https://d33wubrfki0l68.cloudfront.net/7fa44a5471d40025344176ede4169c5ad3159482/1577f/screenshots/rstudio-workspace.png" alt="Disenable workspace preservation in Rstudio" width="550"/>
+]
+
+---
+# R projects 
+
+.center[![Allison Horsts visualisation of Rstudio projects](https://pbs.twimg.com/media/EnepKxNVQAAhNhg.jpg)]
+
+---
+# R Projects
+
+.center[![Start a new project step 1](https://d33wubrfki0l68.cloudfront.net/87562c4851bf4d0b0c8415dc9d6690493572e362/a6685/screenshots/rstudio-project-1.png)]
+
+---
+# R projects
+
+.center[![Start a new project step 2](https://d33wubrfki0l68.cloudfront.net/0fa791e2621be297cb9c5cac0b2802223e3d7714/57d89/screenshots/rstudio-project-2.png)]  
+  
+---
+# R projects  
+
+.center[![Start a new project step 3](https://d33wubrfki0l68.cloudfront.net/dee6324df1f5c5121d1c1e9eed822ee52c87167b/1f325/screenshots/rstudio-project-3.png)]
+
+---
+# Folder structures
+
+.center[![Example project structure](img/example_project.png)]  
+  
+---
+# Here Package
+
+<!-- .center[![Allison Horsts visualisation of the here function](https://raw.githubusercontent.com/allisonhorst/stats-illustrations/master/rstats-artwork/here.png)]   -->
+
+.center[<img src="https://raw.githubusercontent.com/allisonhorst/stats-illustrations/master/rstats-artwork/here.png" alt="Allison Horsts visualisation of the here function" width="650"/>
+]
+
+---
+# Troubleshooting  
+
+.center[![Programmer google joke](https://s3.amazonaws.com/rails-camp-tutorials/blog/programming+memes/programming-or-googling.jpg)]  
+
+---
+class:inverse, mline, center, middle
+# PBDB Data
