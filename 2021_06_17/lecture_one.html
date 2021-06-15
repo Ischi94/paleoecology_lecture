@@ -14,6 +14,8 @@
     <script>window.addEventListener('load', function() { window.xeSearch = new RemarkSearch({"position":"bottom-left","caseSensitive":false,"showIcon":false,"autoSearch":true}) })</script>
     <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
     <script src="libs/tile-view/tile-view.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
   </head>
   <body>
     <textarea id="source">
@@ -22,8 +24,8 @@ class: center, middle, inverse, title-slide
 # Analytical Paleobiology
 ## with R
 ### Gregor H. Mathes
-### Paleoecology Lectures
-### 2021/06/17 (updated: 2021-06-14)
+### University of Bayreuth/ Paleoecology Lectures
+### 2021/06/17 (updated: 2021-06-15)
 
 ---
 
@@ -69,6 +71,7 @@ class: center, middle, inverse, title-slide
   
 
 
+
 ---
 class:inverse, mline, center, middle
 # Tidy project structure
@@ -91,6 +94,10 @@ class:inverse, mline, center, middle
 - absolute paths
   
 - `rm(list = ls())`
+
+- non-reproducible results  
+  
+- total mess
 ]
 
 --
@@ -154,7 +161,153 @@ class:inverse, mline, center, middle
 
 ---
 class:inverse, mline, center, middle
+  
 # PBDB Data
+
+---
+# Paleobiology Database  
+  
+[Download records](https://paleobiodb.org/classic/displayDownloadGenerator)
+
+- either directly via the website
+  
+- or via the generated URL  
+  
+- both access the API to the database  
+  
+- carefully read the [documentation](https://paleobiodb.org/data1.2/)
+
+.pull-right[![The PBDB logo](https://amdunhill.files.wordpress.com/2016/02/pbdb-logo.png)]  
+  
+---
+# Binning observations  
+ 
+.pull-left[
+**Problem**
+- huge uncertainty around fossil ages  
+  
+- uneven spaces between occurrences
+
+]
+
+.pull-right[
+**Solution**  
+  
+- binning occurrences
+  - assigning similarly aged fossils to a shared temporal unit  
+  
+  
+- coarsen the resolution
+]  
+  
+---
+# Binning observations  
+
+.center[
+![](lecture_one_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+]  
+  
+---
+# Binning observations  
+
+.center[
+![](lecture_one_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+]  
+  
+---
+# Binning observations
+
+.panelset[
+.panel[.panel-name[R Code]
+
+
+```r
+library(divDyn)
+data("corals")
+
+corals %&gt;%
+  mutate(age_range = abs(max_ma - min_ma)) %&gt;%
+  ggplot(aes(x = age_range)) +
+  geom_histogram(binwidth = 0.5) +
+  labs(x = 'Age range (myr)', y = 'Count') +
+  theme_minimal(base_size = 20)
+```
+]
+
+.panel[.panel-name[Plot]
+
+![](lecture_one_files/figure-html/histogram-1.png)
+]
+]
+
+---
+# Sample standardization
+
+ 
+.pull-left[
+**Problem**
+- Data are samples
+  - but we want to make inferences about populations
+  
+  
+- number of species increases with the number of individuals samples
+  
+  
+- comparison of collection of samples
+  - invalid with different numbers of counted individuals 
+  
+  
+]
+
+.pull-right[
+**Solution**  
+  
+- Sampling standardization 
+  
+  
+- Previously: Classical rarefaction  
+  
+- Better: Shareholder Quorum Subsampling (SQS)&lt;sup&gt;1&lt;/sup&gt;
+]  
+
+.footnote[
+[1] [Alroy 2010](https://onlinelibrary.wiley.com/doi/pdf/10.1111/j.1475-4983.2010.01011.x)
+]
+
+---
+# SQS
+
+- an algorithm samples until taxa whose combined relative abundance exceeds a given threshold
+  - threshold called the quorum  
+  
+  
+- final results not dependent on quorum, but values between 0.3 and 0.7 are most commonly used
+
+
+- options to exclude singletons (species occuring only once in a sample) and dominants (the most abundant taxon)
+  - only relevant for small data sets
+
+---
+class:inverse, mline, center, middle
+
+# It's your turn  
+  
+---
+# Task
+
+- set up a tidy project
+ 
+ 
+- go to the [PBDB](https://paleobiodb.org/classic/displayDownloadGenerator) and download some data you are interested in 
+  - either directly or just save the URL to load the data from within R
+  
+  
+- go through the `exercise_one.R` file
+
+&lt;!-- !["Your turn"](https://ak2.picdn.net/shutterstock/videos/15323182/thumb/8.jpg) --&gt;
+
+.center[&lt;img src="https://ak2.picdn.net/shutterstock/videos/15323182/thumb/8.jpg" alt="Allison Horsts visualisation of the here function" width="650"/&gt;
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
